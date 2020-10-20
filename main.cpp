@@ -16,6 +16,7 @@ int main() {
         a[i] = (double) 10.0*rand()/RAND_MAX;
         b[i] = (double) 10.0*rand()/RAND_MAX;
     }
+
     std::cout << "vectors defined" << std::endl;
     auto begin = std::chrono::high_resolution_clock::now();
     VectorAdd_CPU(a, b, c, N);
@@ -30,8 +31,20 @@ int main() {
     elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(end - begin);
     std::cout << "It took " << elapsed.count() << " seconds to compute on GPU!" << std::endl;
 
+    VectorsClass vecs1(N);
+    begin = std::chrono::high_resolution_clock::now();
+    vecs1.VectorAdd_GPU_InClass(a, b, c, N);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(end - begin);
+    std::cout << "It took " << elapsed.count() << " seconds to compute on GPU with the class (excluding cudaMalloc time)!" << std::endl;
 
 
+    VectorsClass vecs2(a,b,N);
+    begin = std::chrono::high_resolution_clock::now();
+    vecs2.VectorAdd_GPU_InClass(c, N);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(end - begin);
+    std::cout << "It took " << elapsed.count() << " seconds to compute on GPU with the class (excluding cudaMalloc and cudaMemcpy time)!" << std::endl;
     delete [] a;
     delete [] b;
     delete [] c;
