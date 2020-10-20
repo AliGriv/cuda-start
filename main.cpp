@@ -1,14 +1,12 @@
 #include <iostream>
 #include <stdio.h>
 #include <chrono>
+#include "funcs.h"
+#include "funcs_cuda.cuh"
+
 const int N = 10000000;
 
-/* cpu code for adding two vectors*/
-void VectorAdd_CPU(const double *a, const double *b, double *c, const int size) {
-    for (int i {0}; i < size; ++i) {
-        c[i] = a[i] + b[i];
-    }
-}
+
 int main() {
 
     double *a = new double[N];
@@ -24,6 +22,15 @@ int main() {
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(end - begin);
     std::cout << "It took " << elapsed.count() << " seconds to compute on CPU!" << std::endl;
+
+
+    begin = std::chrono::high_resolution_clock::now();
+    VectorAdd_GPU(a, b, c, N);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::duration<float>>(end - begin);
+    std::cout << "It took " << elapsed.count() << " seconds to compute on GPU!" << std::endl;
+
+
 
     delete [] a;
     delete [] b;
