@@ -35,3 +35,8 @@ Another error that was encountered was about not being able to find the library 
 ```
 sudo ldconfig
 ```
+
+
+## Results
+
+Up to now, it seems that cudaMalloc takes a lot of time. It is to allocate memory beforehand so that we do not include it in measuring the performance. After cudaMalloc, cudaMemcpy also takes some time which the unnecessary part can be avoided. Other than that, the program seems to be working after all!!
